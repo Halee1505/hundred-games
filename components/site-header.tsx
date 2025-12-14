@@ -1,81 +1,82 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SearchBar } from "@/components/search-bar";
 
-const navLinks = [
-  { label: "Home", href: "/", icon: "home" },
-  { label: "Games", href: "/category/all", icon: "stadia_controller" },
-  { label: "New Releases", href: "/category/new", icon: "new_releases" },
-  { label: "Community", href: "/search?q=community", icon: "forum" },
-  { label: "Search", href: "/search", icon: "search" },
-];
+export function SiteHeader() {
+  const [isMobileSearch, setIsMobileSearch] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
-export function SiteHeader({ active }: { active?: string }) {
-  const matches = navLinks.map((link) => {
-    const isActive = active && active.startsWith(link.href);
-    return { ...link, isActive };
-  });
+  useEffect(() => {
+    if (isMobileSearch) {
+      searchInputRef.current?.focus();
+    }
+  }, [isMobileSearch]);
 
   return (
-    <header className="sticky top-0 z-50 flex items-center justify-between border-b border-surface-accent bg-background-dark/95 px-4 py-3 backdrop-blur-xl lg:px-10">
-      <div className="flex items-center gap-4 lg:gap-8">
-        <Link
-          href="/"
-          className="flex items-center gap-3 text-white hover:opacity-80 transition-opacity"
+    <header className="sticky top-0 z-50 border-b border-surface-accent bg-background-dark/95 px-4 py-3 backdrop-blur-xl lg:px-10">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-6">
+        <div
+          className={`items-center justify-between md:flex md:justify-start ${
+            isMobileSearch ? "hidden md:flex" : "flex"
+          }`}
         >
-          <Image
-            src="/logo.jpg"
-            alt="Hundred Games"
-            width={40}
-            height={40}
-            className="size-9 rounded-lg object-cover"
-            priority
-          />
-          <span className="hidden text-xl font-bold tracking-tight sm:block">
-            Hundred Games
-          </span>
-        </Link>
-
-        <nav className="hidden md:flex items-center gap-6">
-          {matches.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`text-sm font-medium transition-colors ${
-                link.isActive
-                  ? "text-primary border-b-2 border-primary pb-0.5"
-                  : "text-white hover:text-primary"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-      </div>
-
-      <div className="flex flex-1 items-center justify-end gap-3 sm:gap-4">
-        <div className="hidden w-full max-w-md md:flex">
-          <SearchBar />
-        </div>
-        {/* <button className="relative flex size-10 items-center justify-center rounded-full bg-surface-accent text-white hover:bg-surface-accent/80">
-          <span className="material-symbols-outlined">notifications</span>
-          <span className="absolute right-2 top-2 size-2 rounded-full bg-primary" />
-        </button> */}
-      </div>
-      <nav className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-around border-t border-surface-accent bg-background-dark/95 px-4 py-3 backdrop-blur md:hidden">
-        {matches.map((link) => (
           <Link
-            key={link.href}
-            href={link.href}
-            className={`flex flex-col items-center text-xs ${
-              link.isActive ? "text-primary" : "text-text-secondary"
-            }`}
+            href="/"
+            className="flex items-center gap-3 text-white transition-opacity hover:opacity-80"
           >
-            <span className="material-symbols-outlined text-base">{link.icon}</span>
-            {link.label}
+            <Image
+              src="/logo.jpg"
+              alt="Hundred Games"
+              width={40}
+              height={40}
+              className="size-9 rounded-lg object-cover"
+              priority
+            />
+            <span className="text-xl font-bold tracking-tight">
+              Hundred Games
+            </span>
           </Link>
-        ))}
-      </nav>
+          <button
+            type="button"
+            onClick={() => setIsMobileSearch(true)}
+            className="flex size-10 items-center justify-center rounded-full border border-surface-accent/80 text-text-secondary transition hover:border-primary hover:text-white md:hidden"
+            aria-label="Open search"
+          >
+            <span className="material-symbols-outlined text-2xl">search</span>
+          </button>
+        </div>
+
+        <div
+          className={`items-center gap-3 md:flex ${
+            isMobileSearch ? "flex" : "hidden"
+          }`}
+        >
+          <div className="w-full flex-1 md:max-w-2xl">
+            <SearchBar
+              inputRef={searchInputRef as React.RefObject<HTMLInputElement>}
+            />
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsMobileSearch(false)}
+            className="flex size-4 items-center justify-center transition hover:border-primary hover:text-white md:hidden"
+            aria-label="Close search"
+          >
+            <span className="material-symbols-outlined text-2xl">close</span>
+          </button>
+          <button
+            type="button"
+            className="hidden lg:hidden rounded-full border border-surface-accent/80 p-2 text-text-secondary transition hover:border-primary hover:text-white md:flex"
+            aria-label="Focus search"
+            onClick={() => searchInputRef.current?.focus()}
+          >
+            <span className="material-symbols-outlined text-2xl">search</span>
+          </button>
+        </div>
+      </div>
     </header>
   );
 }

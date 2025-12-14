@@ -66,7 +66,7 @@ export default async function GameDetailPage({ params }: PageProps) {
 
   return (
     <div className="flex min-h-screen flex-col bg-background-dark text-white">
-      <SiteHeader active="Games" />
+      <SiteHeader />
       <main className="mx-auto flex w-full max-w-[1400px] flex-1 flex-col px-4 py-6 lg:px-10">
         <div className="mb-6 flex flex-wrap items-center gap-2 text-sm text-text-secondary">
           <Link href="/" className="hover:text-primary">

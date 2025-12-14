@@ -9,17 +9,12 @@ type Props = {
 };
 
 export function GameCard({ game, variant = "primary" }: Props) {
-  const baseClasses =
-    "group flex flex-col overflow-hidden rounded-2xl border border-surface-accent bg-surface-dark/60 backdrop-blur transition-all hover:border-primary/50 hover:shadow-[0_0_25px_rgba(13,242,89,0.15)]";
-  const padding = variant === "compact" ? "p-3" : "p-4";
-
+  const ratio = variant === "compact" ? "aspect-[3/2]" : "aspect-[4/3]";
   return (
-    <article className={baseClasses}>
-      <Link
-        href={`/game/${game.slug}`}
-        className="relative block aspect-[4/3] overflow-hidden"
-      >
-        <div className="absolute inset-0 bg-gradient-to-t from-background-dark/90 to-transparent" />
+    <article
+      className={`group relative overflow-hidden rounded-xl border border-surface-accent/60 bg-surface-dark/40 ${ratio}`}
+    >
+      <Link href={`/game/${game.slug}`} className="absolute inset-0">
         {game.thumbnailUrl ? (
           <img
             src={game.thumbnailUrl}
@@ -30,24 +25,22 @@ export function GameCard({ game, variant = "primary" }: Props) {
         ) : (
           <div className="h-full w-full bg-gradient-to-br from-surface-accent to-background-dark" />
         )}
-        <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-xs font-bold text-primary backdrop-blur">
-          <span className="material-symbols-outlined text-base">star</span>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        <div className="pointer-events-none absolute left-3 top-3 rounded-full bg-black/70 px-2 py-0.5 text-[10px] uppercase tracking-[0.25em] text-white">
+          {game.category}
+        </div>
+        <div className="pointer-events-none absolute right-3 top-3 rounded-full bg-black/70 px-2 py-0.5 text-[11px] font-semibold text-primary">
           {game.rating.toFixed(1)}
         </div>
-      </Link>
-      <div className={`flex flex-1 flex-col gap-1 ${padding}`}>
-        <div className="flex items-center justify-between text-xs text-text-secondary">
-          <span className="truncate">{game.category}</span>
-          <span className="rounded-full bg-surface-accent px-2 py-0.5 text-[11px] text-white/70">
-            {game.playTime}
-          </span>
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-full px-3 pb-3 transition duration-300 group-hover:translate-y-0">
+          <div className="rounded-lg bg-black/80 px-3 py-2 text-white shadow-lg">
+            <p className="text-sm font-semibold line-clamp-2">{game.title}</p>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-text-secondary">
+              Play now
+            </p>
+          </div>
         </div>
-        <h3 className="text-base font-semibold text-white">
-          <Link href={`/game/${game.slug}`} className="hover:text-primary">
-            {game.title}
-          </Link>
-        </h3>
-      </div>
+      </Link>
     </article>
   );
 }

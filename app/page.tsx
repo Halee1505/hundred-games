@@ -11,7 +11,7 @@ const freshDrops = games.slice(8, 16);
 const discoverLinks = [
   { label: "Home", icon: "home", href: "/", active: true },
   { label: "Trending", icon: "trending_up", href: "/category/trending" },
-  { label: "New Releases", icon: "new_releases", href: "/category/new" },
+  { label: "New Games", icon: "new_releases", href: "/category/new" },
 ];
 
 const heroStats = [
@@ -39,7 +39,7 @@ const categoryIcons: Record<string, { icon: string; color: string }> = {
 export default function HomePage() {
   return (
     <div className="flex min-h-screen w-full flex-col bg-background-dark text-white">
-      <SiteHeader active="Home" />
+      <SiteHeader />
 
       <div className="w-full bg-[#0d1b11] border-b border-[#1a3322] py-4">
         <div className="mx-auto flex h-[90px] w-full max-w-[970px] flex-col items-center justify-center rounded-xl border border-[#22492f] bg-surface-dark/70 px-6 text-text-secondary shadow-inner">
@@ -51,7 +51,7 @@ export default function HomePage() {
       </div>
 
       <div className="mx-auto flex w-full max-w-[1600px] flex-1 gap-0">
-        <aside className="hidden w-64 flex-col border-r border-surface-accent bg-background-dark px-4 py-6 lg:flex">
+        <aside className="hidden w-64 flex-col border-r border-surface-accent bg-background-dark px-4 py-6 lg:flex lg:sticky lg:top-28 lg:self-start">
           <div className="flex flex-col gap-1">
             <h3 className="px-3 text-xs font-bold uppercase tracking-widest text-text-secondary">
               Discover
@@ -94,7 +94,7 @@ export default function HomePage() {
                   >
                     {icon}
                   </span>
-                  {category.name}
+                  {category.name} Games
                 </Link>
               );
             })}
@@ -183,7 +183,7 @@ export default function HomePage() {
                 View All
               </Link>
             </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 xl:grid-cols-4">
               {trendingGames.map((game) => (
                 <GameCard key={game.slug} game={game} />
               ))}
@@ -208,7 +208,7 @@ export default function HomePage() {
                 Browse all
               </Link>
             </div>
-            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
               {freshDrops.map((game) => (
                 <GameCard key={game.slug} game={game} variant="compact" />
               ))}

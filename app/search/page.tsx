@@ -26,7 +26,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <div className="flex min-h-screen flex-col bg-background-dark text-white">
-      <SiteHeader active="Search" />
+      <SiteHeader />
       <main className="mx-auto flex w-full max-w-[1440px] flex-1 flex-col gap-6 px-4 py-6 lg:flex-row lg:px-10">
         <aside className="hidden w-64 flex-shrink-0 rounded-3xl border border-surface-accent bg-surface-dark/60 p-6 lg:flex">
           <div className="sticky top-28">

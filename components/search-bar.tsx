@@ -1,19 +1,25 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import type { RefObject } from "react";
 
 type SearchBarProps = {
   placeholder?: string;
   className?: string;
   inputClassName?: string;
+  autoFocus?: boolean;
+  inputRef?: RefObject<HTMLInputElement>;
 };
 
 export function SearchBar({
   placeholder = "Search for games, genres...",
   className = "",
   inputClassName = "",
+  autoFocus = false,
+  inputRef,
 }: SearchBarProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const internalRef = useRef<HTMLInputElement>(null);
+  const targetRef = inputRef ?? internalRef;
 
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -21,7 +27,7 @@ export function SearchBar({
         return;
       }
 
-      const input = inputRef.current;
+      const input = targetRef.current;
       if (!input || document.activeElement === input) {
         return;
       }
@@ -32,25 +38,26 @@ export function SearchBar({
 
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
-  }, []);
+  }, [targetRef]);
 
   return (
     <form
       action="/search"
       method="get"
-      className={`gap-4 not-even:flex w-full items-center text-white focus-within:ring-2 focus-within:ring-primary/50 transition-all ${className}`}
+      className={`w-full flex items-center gap-4 text-white ${className}`}
     >
       <label htmlFor="site-search" className="sr-only">
         Search games
       </label>
       <input
-        ref={inputRef}
+        ref={targetRef}
         id="site-search"
         name="q"
         type="search"
         placeholder={placeholder}
         autoComplete="off"
-        className={`px-4  rounded-lg bg-surface-accent  flex-1 border-0 py-2 text-sm text-white placeholder:text-text-secondary/70 focus:outline-none focus:ring-0 ${inputClassName}`}
+        autoFocus={autoFocus}
+        className={`lg:min-w-100 flex-1 rounded-lg border-0 bg-surface-accent px-4 py-2 text-sm text-white placeholder:text-text-secondary/70 focus:border-transparent focus:outline-none focus:ring-0 ${inputClassName}`}
       />
       <button
         type="submit"

@@ -26,11 +26,13 @@ export default function CategoryGameGrid({ games, pageSize = 12 }: Props) {
           <span className="text-white">{games.length}</span> games
         </p>
         <div className="flex items-center gap-2 rounded-full border border-surface-accent px-4 py-2 text-sm text-text-secondary">
-          <span className="material-symbols-outlined text-base text-primary">trophy</span>
+          <span className="material-symbols-outlined text-base text-primary">
+            trophy
+          </span>
           Curated for you
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 xl:grid-cols-6">
         {visibleGames.map((game) => (
           <GameCard key={game.slug} game={game} />
         ))}
@@ -49,4 +51,3 @@ export default function CategoryGameGrid({ games, pageSize = 12 }: Props) {
     </div>
   );
 }
-
