@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { GameCard } from "@/components/game-card";
+import CategoryGameGrid from "@/components/category-game-grid";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import {
@@ -68,8 +68,6 @@ export default async function CategoryPage({
       : [query.filters]
     : [];
   const selectedRating = query.rating ? Number(query.rating) : undefined;
-  const pageParam = Array.isArray(query.page) ? query.page[0] : query.page;
-  const page = Math.max(parseInt(pageParam ?? "1", 10) || 1, 1);
   const categoryName = getCategoryFromSlug(slug) ?? "Featured";
   const categoryGames = getGamesByCategory(slug);
   const collection: Game[] = categoryGames.length
@@ -88,10 +86,6 @@ export default async function CategoryPage({
     const matchesRating = !selectedRating || game.rating >= selectedRating;
     return matchesFilters && matchesRating;
   });
-  const perPage = 12;
-  const visibleCount = page * perPage;
-  const visibleGames = filteredCollection.slice(0, visibleCount);
-  const hasMore = filteredCollection.length > visibleCount;
 
   return (
     <div className="flex min-h-screen flex-col bg-background-dark text-white">
@@ -181,7 +175,6 @@ export default async function CategoryPage({
         <section className="grid grid-cols-1 gap-8 lg:grid-cols-[280px_1fr]">
           <aside className="rounded-3xl border border-surface-accent bg-surface-dark/60 p-5">
             <form action="" method="get" className="space-y-6">
-              <input type="hidden" name="page" value="1" />
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-bold">Filters</h2>
                 <Link
@@ -283,51 +276,7 @@ export default async function CategoryPage({
               </div>
             </form>
           </aside>
-          <div className="space-y-6">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <p className="text-sm text-text-secondary">
-                Showing{" "}
-                <span className="text-white">{visibleGames.length}</span> of{" "}
-                <span className="text-white">{filteredCollection.length}</span>{" "}
-                games
-              </p>
-              <div className="flex items-center gap-2 rounded-full border border-surface-accent px-4 py-2 text-sm text-text-secondary">
-                <span className="material-symbols-outlined text-base text-primary">
-                  trophy
-                </span>
-                Curated for you
-              </div>
-            </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-              {visibleGames.map((game) => (
-                <GameCard key={game.slug} game={game} />
-              ))}
-            </div>
-            {hasMore && (
-              <div className="flex justify-center pt-4">
-                <form action={`/category/${slug}`} method="get">
-                  {selectedFilters.map((filter) => (
-                    <input
-                      key={filter}
-                      type="hidden"
-                      name="filters"
-                      value={filter}
-                    />
-                  ))}
-                  {selectedRating ? (
-                    <input type="hidden" name="rating" value={selectedRating} />
-                  ) : null}
-                  <input type="hidden" name="page" value={page + 1} />
-                  <button
-                    type="submit"
-                    className="rounded-full border border-surface-accent px-6 py-2 text-sm font-semibold text-white transition hover:border-primary hover:text-primary"
-                  >
-                    Load more games
-                  </button>
-                </form>
-              </div>
-            )}
-          </div>
+          <CategoryGameGrid games={filteredCollection} />
         </section>
       </main>
       <SiteFooter />
