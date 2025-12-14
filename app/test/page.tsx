@@ -7,12 +7,13 @@ import { games } from "@/lib/games";
 export default function TestPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background-dark text-white">
-      <SiteHeader active="Games" />
+      <SiteHeader />
       <main className="mx-auto flex w-full max-w-[1400px] flex-1 flex-col gap-6 px-4 py-6 lg:px-10">
         <header className="mb-4">
           <h1 className="text-3xl font-black">Embed Test Harness</h1>
           <p className="text-sm text-text-secondary">
-            Preview every game with thumbnail + iframe to validate URLs and embeds.
+            Preview every game with thumbnail + iframe to validate URLs and
+            embeds.
           </p>
         </header>
 
@@ -38,7 +39,9 @@ export default function TestPage() {
                       </div>
                     )}
                   </div>
-                  <p className="mt-2 text-xs text-text-secondary break-all">{game.thumbnailUrl ?? "No thumbnail URL"}</p>
+                  <p className="mt-2 text-xs text-text-secondary break-all">
+                    {game.thumbnailUrl ?? "No thumbnail URL"}
+                  </p>
                 </div>
 
                 <div className="flex-1 space-y-3">
@@ -77,4 +80,3 @@ export default function TestPage() {
     </div>
   );
 }
-
