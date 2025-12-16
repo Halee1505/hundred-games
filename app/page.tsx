@@ -5,8 +5,8 @@ import { SiteHeader } from "@/components/site-header";
 import { games, getAllCategories } from "@/lib/games";
 
 const featuredGame = games[0];
-const trendingGames = games.slice(0, 8);
-const freshDrops = games.slice(8, 16);
+const trendingGames = games.slice(0, 16);
+const freshDrops = games.slice(16, 28);
 
 const discoverLinks = [
   { label: "Home", icon: "home", href: "/", active: true },
@@ -24,6 +24,9 @@ const adBackground =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuDU9fo4vQ9gt-vC4KOSIWlJL5B2KW4Ct5m6uho5n2tqgm6Vn2XoTpMGKfyH3nOGJww11eUBqwCKWOoRtsGa3xwI1Fqr4l7B0xkLsMQw-0j5K35Zmnc_A2QNZlsa5c9ynJo6pUN2jG1a5J3TBWEiuofNv4kMdbmeyWXQG6itweGMPJk3aUy7I_wry_vhFY7aAaMTzV1hf2TU7R5b5NJXsBubjCCPm2e-IFF1Xp2xfciaeL8PpZDC40jcWTlXWfweVGcUZ4GE2Tq-QQ";
 
 const categoryLinks = getAllCategories();
+const categoryNameMap = Object.fromEntries(
+  categoryLinks.map((category) => [category.slug, category.name])
+);
 
 const categoryIcons: Record<string, { icon: string; color: string }> = {
   action: { icon: "sports_esports", color: "text-primary" },
@@ -35,6 +38,32 @@ const categoryIcons: Record<string, { icon: string; color: string }> = {
   adventure: { icon: "explore", color: "text-yellow-400" },
   casual: { icon: "weekend", color: "text-emerald-400" },
 };
+
+const categorySpotlightSlugs = [
+  "action",
+  "adventure",
+  "racing",
+  "puzzle",
+  "sports",
+  "strategy",
+  "arcade",
+  "casual",
+];
+
+const categorySpotlights = categorySpotlightSlugs
+  .map((slug) => {
+    const gamesForCategory = games
+      .filter((game) => game.categorySlug === slug)
+      .slice(0, 6);
+    return {
+      slug,
+      name: categoryNameMap[slug] ?? slug,
+      icon: categoryIcons[slug]?.icon ?? "stadia_controller",
+      color: categoryIcons[slug]?.color ?? "text-primary",
+      games: gamesForCategory,
+    };
+  })
+  .filter((spotlight) => spotlight.games.length > 0);
 
 export default function HomePage() {
   return (
@@ -183,9 +212,9 @@ export default function HomePage() {
                 View All
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8">
               {trendingGames.map((game) => (
-                <GameCard key={game.slug} game={game} />
+                <GameCard key={game.slug} game={game} variant="square" />
               ))}
             </div>
           </section>
@@ -208,9 +237,9 @@ export default function HomePage() {
                 Browse all
               </Link>
             </div>
-            <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8">
               {freshDrops.map((game) => (
-                <GameCard key={game.slug} game={game} variant="compact" />
+                <GameCard key={game.slug} game={game} variant="square" />
               ))}
             </div>
           </section>
@@ -248,6 +277,59 @@ export default function HomePage() {
                   </Link>
                 );
               })}
+            </div>
+          </section>
+
+          <section className="mb-12 rounded-3xl border border-surface-accent/80 bg-background-dark/60 p-6">
+            <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm uppercase tracking-[0.3em] text-primary">
+                  Genre Spotlights
+                </p>
+                <h2 className="text-2xl font-black text-white">
+                  Dive deeper by category
+                </h2>
+              </div>
+              <Link
+                href="/category/all"
+                className="text-sm font-semibold text-text-secondary hover:text-primary"
+              >
+                Browse full library
+              </Link>
+            </div>
+            <div className="space-y-8">
+              {categorySpotlights.map((category) => (
+                <div key={category.slug} className="space-y-3">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-center gap-3">
+                      <span
+                        className={`material-symbols-outlined rounded-full bg-black/60 p-2 text-xl ${category.color}`}
+                      >
+                        {category.icon}
+                      </span>
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.3em] text-text-secondary">
+                          {category.games.length} Picks
+                        </p>
+                        <h3 className="text-xl font-semibold text-white">
+                          {category.name} Games
+                        </h3>
+                      </div>
+                    </div>
+                    <Link
+                      href={`/category/${category.slug}`}
+                      className="text-sm font-semibold text-primary hover:text-emerald-300"
+                    >
+                      View all
+                    </Link>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8">
+                    {category.games.map((game) => (
+                      <GameCard key={game.slug} game={game} variant="square" />
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           </section>
 

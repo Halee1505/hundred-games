@@ -149,3 +149,40 @@ body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+.swiper {
+  padding-bottom: 0.5rem;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 73, 47, 0.55);
+  background: rgba(12, 25, 17, 0.85);
+  color: #ffffff;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  font-size: 1.25rem;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  border-color: rgba(13, 242, 89, 0.6);
+  color: #0df259;
+}
+
+.swiper-button-disabled {
+  opacity: 0.3 !important;
+}
+
+@media (max-width: 768px) {
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: none;
+  }
+}

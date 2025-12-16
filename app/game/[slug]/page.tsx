@@ -125,30 +125,6 @@ export default async function GameDetailPage({ params }: PageProps) {
             </header>
 
             <section className="mt-6 space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-3">
-                  <ScrollButton
-                    className="flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-bold text-background-dark shadow-[0_0_20px_rgba(13,242,89,0.3)]"
-                    targetId={playerId}
-                    ariaLabel={`Scroll to ${game.title} player`}
-                  >
-                    <span className="material-symbols-outlined text-base">
-                      play_arrow
-                    </span>
-                    Play
-                  </ScrollButton>
-                  <Link
-                    href="/category/all"
-                    className="rounded-full border border-surface-accent px-5 py-2 text-sm font-semibold text-text-secondary hover:text-white"
-                  >
-                    More games
-                  </Link>
-                </div>
-                <div className="flex items-center gap-3">
-                  <FullscreenButton targetId={playerId} />
-                </div>
-              </div>
-
               <div
                 id={playerId}
                 className="player mt-4 flex aspect-video w-full items-center justify-center overflow-hidden rounded-3xl border border-surface-accent bg-black"
@@ -163,6 +139,12 @@ export default async function GameDetailPage({ params }: PageProps) {
                   className="h-full w-full"
                 />
               </div>
+              <div className="flex flex-wrap items-center justify-end gap-3">
+                <div className="flex items-center gap-3">
+                  <FullscreenButton targetId={playerId} />
+                </div>
+              </div>
+
               <p className="text-sm text-text-secondary">{safetyNotice}</p>
             </section>
 
