@@ -201,7 +201,7 @@
   },
   {
     "url": "https://thiefpuzzle.io/",
-    "iframe_src": "/thief-puzzle.embed",
+    "iframe_src": "https://html5.gamedistribution.com/af6d659dc19740428c136ceb911b71a4/?utm_source=thiefpuzzle.io&utm_medium=thief-puzzle-online&utm_campaign=block-and-redirect",
     "thumbnail_url": "/data/image/options/thief-puzzle-banner.jpg",
     "title": "Thief Puzzle",
     "error": null,
